@@ -1,0 +1,20 @@
+{
+  "name": "LIRI_app",
+  "version": "1.0.0",
+  "description": "Language Interpretation and Recognition Interface - a command line node app that takes in parameters and gives back data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KBrummage/LIRI_app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KBrummage/LIRI_app/issues"
+  },
+  "homepage": "https://github.com/KBrummage/LIRI_app#readme"
+}
