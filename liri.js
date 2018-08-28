@@ -4,23 +4,24 @@ var keys = require("./keys.js");
 var moment = require('moment');
 var Spotify = require('node-spotify-api');
 var request = require('request');
-
+var fs = require('fs');
 
 var argumentA = process.argv[2];
 var argumentB = process.argv[3];
 
-
 if (argumentA === "concert-this") {
-    concertThis();
+    concertThis(argumentB);
 } else if (argumentA === "spotify-this-song") {
-    spotifyThisSong();
+    spotifyThisSong(argumentB);
 } else if (argumentA === "movie-this") {
-    movieThis();
+    movieThis(argumentB);
 } else if (argumentA === "do-what-it-says") {
     doWhatItSays();
 }
 
 function concertThis(argumentB) {
+    appendInput(argumentA, argumentB)
+
     var queryURL = `https://rest.bandsintown.com/artists/${argumentB}/events?app_id=codingbootcamp`
     request(queryURL, function (error, response, body) {
         //   console.log('error:', error); // Print the error if one occurred
@@ -38,9 +39,8 @@ function concertThis(argumentB) {
 };
 
 function spotifyThisSong(argumentB) {
-    var argumentB = process.argv[3];
-    console.log(argumentB);
-    
+    appendInput(argumentA, argumentB)
+
     var spotify = new Spotify({
         id: keys.spotify.id,
         secret: keys.spotify.secret
@@ -71,6 +71,9 @@ Spotify Link: ${previewLink}`)
 };
 
 function movieThis(argumentB) {
+    appendInput(argumentA, argumentB)
+
+    // var argumentB = process.argv[3];
     var queryURL = `http://www.omdbapi.com/?t=${argumentB}&y=&plot=short&apikey=trilogy`
     request(queryURL, function (error, response, body) {
         //   console.log('error:', error); // Print the error if one occurred
@@ -89,4 +92,30 @@ Actors: ${MovieInfo.Actors}`)
         }
     });
 }
-// var doWhatItSays = function(){};
+
+function doWhatItSays() {
+    fs.readFile('random.txt', 'utf8', function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        data = data.split(',');
+        argumentA = data[0];
+        if (argumentA === "concert-this") {
+            concertThis(data[1]);
+        } else if (argumentA === "spotify-this-song") {
+            spotifyThisSong(data[1]);
+        } else if (argumentA === "movie-this") {
+            movieThis(data[1]);
+        }
+
+
+    })
+}
+
+function appendInput(argA, argB){
+    fs.appendFile('log.txt', `${argA}, ${argB}\n`, 'utf8', (err) => {
+        if (err) throw err;
+        console.log('The "data to append" was appended to file!');
+      });
+      
+}
